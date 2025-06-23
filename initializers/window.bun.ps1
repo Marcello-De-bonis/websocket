@@ -18,6 +18,17 @@ Write-Host "Fonte ufficiale: https://bun.sh"
 Write-Host 'Comando equivalente: powershell -c "irm bun.sh/install.ps1 | iex"'
 Invoke-WebRequest https://bun.sh/install.ps1 -UseBasicParsing | Invoke-Expression
 
+# Aggiungi Bun al PATH utente se non presente
+$bunBinPath = "$env:USERPROFILE\.bun\bin"
+$envPath = [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::User)
+if (-not $envPath.Split(";") -contains $bunBinPath) {
+    [Environment]::SetEnvironmentVariable("Path", "$envPath;$bunBinPath", [EnvironmentVariableTarget]::User)
+    Write-Host "✅ PATH aggiornato (riavvia il terminale per applicare)." -ForegroundColor Yellow
+} else {
+    Write-Host "ℹ️ PATH già configurato correttamente."
+}
+
+
 # Cleanup
 Remove-Item $tempDir -Recurse -Force
 
