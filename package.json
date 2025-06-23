@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start:node": "ts-node index.ts --runtime=node",
-    "start:bun": "bun index.ts --runtime=bun"
+    "start:bun": "bun run index.ts --runtime=bun"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "@types/express": "^5.0.3",
+     "@types/bun": "latest",
     "@types/node": "^24.0.3",
     "typescript": "^5.8.3"
   },
@@ -21,7 +22,6 @@
     "express": "^5.1.0",
     "module-alias": "^2.2.3",
     "socket.io": "^4.8.1",
-    "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   },
   "_moduleAliases": {

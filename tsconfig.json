@@ -1,22 +1,29 @@
 {
 	"compilerOptions": {
-		"target": "ES2020", // Output JS moderno
-		"module": "CommonJS", // Compatibile con Node.js (puoi mettere "ESNext" se usi ESM)
-		"lib": ["ES2020"], // API disponibili nel codice TS
-		"strict": true, // Abilita tutte le strict rules (tipo sicuro)
-		"esModuleInterop": true, // Per import default da moduli CommonJS
-		"forceConsistentCasingInFileNames": true, // Case sensitivity coerente tra OS
-		"skipLibCheck": true, // Skippa il type check delle dipendenze
-		"noImplicitAny": true, // Nessuna variabile con tipo implicito "any"
-		"moduleResolution": "node", // Resolve dei moduli come Node.js
-		"resolveJsonModule": true, // Permette `import x from './file.json'`
-		"outDir": "dist", // Cartella output JS
-		"rootDir": "src", // Cartella dei sorgenti TS
-		"types": ["node"], // Include i tipi di Node.js
-		"allowSyntheticDefaultImports": true, // Per compatibilità con default imports
-		"declaration": true, // Genera file `.d.ts` (utile per libs/NPM)
-		"sourceMap": true,
-		"typeRoots": ["./types", "./node_modules/@types"],
+		// Environment setup & latest features
+		"lib": ["ESNext"],
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleDetection": "force",
+		"jsx": "react-jsx",
+		"allowJs": true,
+
+		// Bundler mode
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+
+		// Best practices
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+
+		// Some stricter flags (disabled by default)
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noPropertyAccessFromIndexSignature": false,
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
