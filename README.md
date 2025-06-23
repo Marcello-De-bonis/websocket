@@ -1,133 +1,152 @@
-# WebSocket Real-time Location Tracking
+# WebSocket Real-time Coordinates sharing
 
-A real-time location tracking application using WebSockets (Socket.IO) with support for both Node.js and Bun runtimes.
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9%2B-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bun](https://img.shields.io/badge/Bun-1.0%2B-000000.svg?logo=bun&logoColor=white)](https://bun.sh/)
 
-## Project Structure
+Un servizio WebSocket ad alte prestazioni per il tracciamento in tempo reale della posizione, progettato per scalare orizzontalmente e supportare migliaia di connessioni simultanee.
+
+## Funzionalità Principali
+
+- **Real-time Bidirezionale**: Comunicazione a bassa latenza tramite WebSocket
+- **Multi-Runtime**: Supporto nativo per Node.js e Bun
+- **Persistenza dei Dati**: Archiviazione delle coordinate in SQLite
+- **Ambiente di Produzione**: Build ottimizzata con minificazione e sourcemap
+- **Gestione degli Ambienti**: Supporto per ambienti di sviluppo e produzione
+- **Type Safety**: Scritto interamente in TypeScript
+
+## Architettura
 
 ```
 websocket/
+├── dist/                    # Build di produzione
 ├── src/
-│   ├── lib/
-│   │   └── utils.ts          # Utility functions and environment configuration
-│   │
-│   ├── server/
-│   │   ├── socket.node.ts  # Node.js WebSocket server implementation
-│   │   └── socket.bun.ts   # Bun WebSocket server implementation
-│   │
-│   └── shared/
-│       ├── db/
-│       │   └── coordinates.json  # JSON database for coordinates (Bun)
-│       │
-│       └── handlers/
-│           └── save-coordinate.ts  # Coordinate saving logic
-│
-├── initializers/           # Shell scripts for environment setup
-├── types/                   # TypeScript type definitions
-├── index.ts                 # Application entry point
-├── index.node.ts            # Node.js specific entry
-├── index.bun.ts             # Bun specific entry
-├── package.json
-└── tsconfig.json
+│   ├── lib/                # Utilità e configurazione
+│   ├── server/              # Implementazioni del server
+│   └── shared/              # Codice condiviso
+│       ├── db/              # Strato di persistenza
+│       └── handlers/        # Logica di business
+├── initializers/            # Script di inizializzazione
+├── types/                   # Definizioni TypeScript
+├── .env.local              # Configurazione ambiente
+├── index.ts                # Punto di ingresso
+└── package.json
 ```
 
-## Features
+## Prerequisiti
 
-- Real-time location tracking using WebSockets
-- Support for multiple clients in different rooms
-- Database persistence of coordinates
-- Cross-runtime compatibility (Node.js and Bun)
-- TypeScript support
+- Node.js 18+ o Bun 1.0+
+- SQLite (incluso in Node.js/Bun)
+- npm, yarn o bun come gestore pacchetti
 
-## Prerequisites
+## Installazione
 
-- Node.js (v16+) or Bun (v1.0+)
-- npm or yarn
-- TypeScript (installed via devDependencies)
-
-## Installation
-
-1. Clone the repository
-2. Install dependencies:
+1. Clona il repository
+2. Installa le dipendenze:
    ```bash
-   # Using npm
-   npm install
-   
-   # Or using Bun
+   # Con Bun (consigliato)
    bun install
+   
+   # Con npm
+   npm install
    ```
 
-## Configuration
+## Configurazione
 
-Create a `.env.local` file in the project root with the following variables:
+Crea un file `.env.local` nella root del progetto:
 
 ```env
 PORT=8080
-NODE_ENV=development
+MODE="prod"
+TO_STORE_COORDINATES=1
 ```
 
-## Running the Application
+## Avvio
 
-### Development Mode
+### Sviluppo
 
-For Node.js:
 ```bash
-npm run dev:node
+# Avvia con Bun (modalità sviluppo)
+MODE=dev bun run start:bun
+
+# Avvia con Node.js (modalità sviluppo)
+MODE=dev npm run start:node
 ```
 
-For Bun:
+### Produzione
+
 ```bash
-bun run dev:bun
+# Costruisci l'applicazione
+bun run build
+
+# Avvia il server di produzione
+cd dist && bun install --production
+bun start
 ```
 
-### Production Mode
+## API WebSocket
 
-For Node.js:
-```bash
-npm run prod:node
-```
+### Eventi Supportati
 
-For Bun:
-```bash
-bun run prod:bun
-```
+- `join` - Unisci un utente a una stanza
+  ```typescript
+  {
+    event: 'join',
+    room: string,
+    userId: string
+  }
+  ```
 
-## API Endpoints
-
-### WebSocket Events
-
-- `connection`: When a client connects
-- `join`: Join a room
-  - Parameters: `room` (string)
-- `move`: Update user's location
-  - Parameters: 
-    ```typescript
-    {
-      room: string;
-      user_id: string;
-      latitude: number;
-      longitude: number;
+- `move` - Aggiorna la posizione di un utente
+  ```typescript
+  {
+    event: 'move',
+    room: string,
+    userId: string,
+    position: {
+      latitude: number,
+      longitude: number
     }
-    ```
+  }
+  ```
 
-## Database
+## Testing
 
-The application uses:
-- SQLite for Node.js (stored in `src/db/coordinates.sqlite`)
-- JSON file for Bun (stored in `src/shared/db/coordinates.json`)
+```bash
+# Esegui i test con Bun
+bun test
 
-## Development
+# O con Node.js
+npm test
+```
 
-### Project Structure
+## Sicurezza
 
-- `src/server/`: Contains server-side WebSocket implementations
-- `src/shared/`: Contains shared code between server and potential client
-- `src/lib/`: Utility functions and helpers
-- `initializers/`: Scripts for environment setup
+- Validazione degli input su tutti gli eventi WebSocket
+- Gestione sicura delle connessioni
+- Isolamento tra le stanze
 
-### TypeScript Configuration
+## Metriche e Monitoraggio
 
-The project uses TypeScript with strict type checking. Configuration can be found in `tsconfig.json`.
+Il servizio espone endpoint per il monitoraggio delle metriche:
 
-## License
+- `/health` - Health check endpoint
+- `/metrics` - Metriche di sistema (se configurato)
 
-ISC License
+## Contributi
+
+I contributi sono ben accetti! Per favore segui le linee guida:
+
+1. Crea un fork del progetto
+2. Crea un branch per la tua feature (`git checkout -b feature/AmazingFeature`)
+3. Fai commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
+4. Pusha il branch (`git push origin feature/AmazingFeature`)
+5. Apri una Pull Request
+
+## Licenza
+
+Distribuito con licenza ISC. Vedi `LICENSE` per maggiori informazioni.
+
+## Supporto
+
+Per problemi o domande, apri una issue sul repository.

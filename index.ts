@@ -4,8 +4,6 @@ import _ from './types/global';
 import {spawn} from 'child_process';
 import { env, runtime } from '@/lib/utils';
 
-
-
 if(env.MODE === 'prod') {
     spawn(`bun build ./src/server/socket.bun.ts --target=bun  --minify --sourcemap --outdir dist`, { stdio: 'inherit' }); 
 } else {
