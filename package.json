@@ -1,0 +1,32 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev:node": "ts-node index.ts --runtime=node",
+    "dev:bun": "bun index.ts --runtime=bun",
+    "prod:node": "tsc && node index.ts --runtime=node",
+    "prod:bun": "bun index.ts --runtime=bun"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "module-alias": "^2.2.3",
+    "socket.io": "^4.8.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "_moduleAliases": {
+    "@": "./src"
+  }
+}
