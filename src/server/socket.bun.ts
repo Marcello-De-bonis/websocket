@@ -1,10 +1,15 @@
+import { join } from 'path';
 import { Database } from 'bun:sqlite';
 import { env, serve, randomUUIDv7 } from 'bun';
 import saveCoordinate from '@/shared/handlers/save-coordinate';
 
 import type { ServerWebSocket } from 'bun';
 
-const db = new Database('../shared/db/coordinates.sqlite', {
+const dbPath = join(import.meta.dir, '/../shared/db', 'coordinates.sqlite');
+if (!existsSync(dbPath)) await mkdir(join(import.meta.dir, 'db'), { recursive: true });
+
+
+const db = new Database(dbPath, {
 	create: true,
 	readwrite: true,
 	strict: false,
@@ -27,8 +32,9 @@ const insert = db.query(
 
 const rooms = new Map<string, ServerWebSocket>();
 
-const server = serve<any, {}>({
-	port: env.PORT ?? 8080,
+export default (PORT: number = env.PORT ?? 8080) => {
+	serve<any, {}>({
+	port: PORT,
 	fetch(req, server) {
 		console.log(req);
 		const success = server.upgrade(req);
@@ -83,7 +89,9 @@ const server = serve<any, {}>({
 			}
 		},
 	},
-});
-
+})
 console.log(`Listening on ${server.hostname}:${server.port}`);
 console.log(`Bun WebSocket server running on ws://localhost:${env.PORT ?? 8080}`);
+}
+
+

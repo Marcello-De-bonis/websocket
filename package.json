@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev:node": "ts-node index.ts --runtime=node",
-    "dev:bun": "bun index.ts --runtime=bun",
-    "prod:node": "tsc && node index.ts --runtime=node",
-    "prod:bun": "bun index.ts --runtime=bun"
+    "start:node": "ts-node index.ts --runtime=node",
+    "start:bun": "bun index.ts --runtime=bun"
   },
   "keywords": [],
   "author": "",
