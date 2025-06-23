@@ -1,14 +1,28 @@
-import 'module-alias/register';
-import _ from './types/global';
+import "module-alias/register";
+import _ from "./types/global";
 
-import {spawn} from 'child_process';
-import { env, runtime } from '@/lib/utils';
+import { spawnSync } from "child_process";
+import { env, runtime } from "@/lib/utils";
 
-if(env.MODE === 'prod') {
-    spawn(`bun build "./src/server/socket.bun.ts" --target=bun  --minify --sourcemap --outdir dist`, { stdio: 'inherit' }); 
+const entry = `./src/server/socket.${runtime}.ts`;
+
+if (env.MODE === "prod") {
+   const controller = new AbortController(),
+      { signal } = controller,
+      outdir = "./dist";
+   spawnSync(
+      "bun",
+      [
+         "build",
+         entry,
+         "--target=bun",
+         "--minify",
+         "--sourcemap",
+         `--outdir ${outdir}`,
+      ],
+      { stdio: "inherit", shell: true, signal, env }
+   );
 } else {
-   const { default: server } = require(`./src/server/socket.${runtime}.ts`);
+   const { default: server } = require();
    server();
 }
-
-
