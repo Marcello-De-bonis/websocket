@@ -3,10 +3,11 @@ import { existsSync, mkdirSync } from 'fs';
 
 export const dbPath = join(
 	process.cwd(),
-	process.env.MODE === 'prod' ? '/db/tables.sqlite' : '/../shared/db',
-	'tables.sqlite'
+	process.env.MODE === 'prod' ? '/db' : '/../shared/db',
+	'/tables.sqlite'
 );
 
+console.log('dbPath', dbPath);
 if (!existsSync(dbPath)) mkdirSync(dirname(dbPath), { recursive: true });
 
 export const initTables = <T extends DB>(db: T) => {

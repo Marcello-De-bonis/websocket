@@ -1,16 +1,18 @@
+import { env } from 'bun';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { spawnSync } from 'child_process';
 import { rmdir, mkdir, rename, copyFile } from 'fs/promises';
-import { spawnSync } from 'bun';
 
 export default async (outdir: string) => {
 	const entry = join(__dirname, `/index.ts`),
 		filename = entry.split('\\').pop()!.replace('.ts', '.js');
 
 	if (existsSync(outdir)) await rmdir(outdir, { recursive: true });
+
 	await mkdir(outdir, { recursive: true });
-	await copyFile(join(__dirname, '/package.json'), join(outdir, '/package.json'));
-	await copyFile(join(__dirname, '/tsconfig.json'), join(outdir, '/tsconfig.json'));
+	await copyFile(join(__dirname, '/$package.json'), join(outdir, '/package.json'));
+	await copyFile(join(__dirname, '/$tsconfig.json'), join(outdir, '/tsconfig.json'));
 
 	spawnSync(
 		'bun',
