@@ -1,0 +1,23 @@
+{
+	"name": "websocket",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "bun index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/bun": "latest",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"module-alias": "^2.2.3"
+	},
+	"_moduleAliases": {
+		"@": "./"
+	}
+}

@@ -2,18 +2,16 @@
 	"name": "websocket",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.ts",
+	"main": "index.js",
 	"type": "commonjs",
 	"scripts": {
-		"start:node": "ts-node index.ts --runtime=node",
-		"start:bun": "bun index.ts --runtime=bun"
+		"start": "node index.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"@types/express": "^5.0.3",
-		"@types/bun": "latest",
 		"@types/node": "^24.0.3",
 		"typescript": "^5.8.3"
 	},
@@ -25,6 +23,6 @@
 		"sqlite3": "^5.1.7"
 	},
 	"_moduleAliases": {
-		"@": "./src"
+		"@": "./"
 	}
 }

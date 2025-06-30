@@ -6,8 +6,7 @@
 		"module": "ESNext",
 		"esModuleInterop": true,
 		"allowJs": true,
-		"outDir": "dist",
-		"rootDir": "src",
+		"rootDir": ".",
 
 		// Bundler mode
 		"moduleResolution": "bundler",
@@ -27,29 +26,8 @@
 		"noPropertyAccessFromIndexSignature": false,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./*"]
 		}
 	},
-	"ts-node": {
-		"esm": false,
-		"compilerOptions": {
-			"lib": ["ES2022"],
-			"target": "ES2022",
-			"module": "commonjs",
-			"sourceMap": true,
-			"esModuleInterop": true,
-			"moduleResolution": "node",
-			"resolveJsonModule": true,
-			"skipLibCheck": false,
-			"forceConsistentCasingInFileNames": true /* Skip type checking all .d.ts files. */,
-			"verbatimModuleSyntax": false,
-			"typeRoots": ["./node_modules/@types"],
-			"baseUrl": ".",
-			"paths": {
-				"@/*": ["./src/*"]
-			}
-		}
-	},
-	"include": ["src"],
-	"exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"]
+	"exclude": ["node_modules", "**/*.js.map"]
 }

@@ -9,5 +9,5 @@ export interface Env {
 	TO_STORE_COORDINATES: 0 | 1;
 
 	// Turn off error if not yet defined
-	[key: string]: string | undefined;
+	[key: string]: string | number | undefined;
 }

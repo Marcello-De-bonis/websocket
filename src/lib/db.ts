@@ -1,13 +1,13 @@
-import { existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
 import { dirname, join } from 'path';
+import { existsSync, mkdirSync } from 'fs';
 
 export const dbPath = join(
-	import.meta.dir,
+	process.cwd(),
 	process.env.MODE === 'prod' ? '/db/tables.sqlite' : '/../shared/db',
 	'tables.sqlite'
 );
-if (!existsSync(dbPath)) await mkdir(dirname(dbPath), { recursive: true });
+
+if (!existsSync(dbPath)) mkdirSync(dirname(dbPath), { recursive: true });
 
 export const initTables = <T extends DB>(db: T) => {
 	db.run(`

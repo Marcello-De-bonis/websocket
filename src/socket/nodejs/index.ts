@@ -1,13 +1,17 @@
 // src/index.ts
 import http from 'http';
+import { join } from 'path';
 import dotenv from 'dotenv';
 import express from 'express';
-import { Database } from 'sqlite3';
-import { Server } from 'socket.io';
 import { env } from 'process';
 
-dotenv.config({ path: __dirname + '/../.env.local' });
+import { Server } from 'socket.io';
+import { Database } from 'sqlite3';
+import { dbPath, initTables, querys } from '@/lib/db';
 
+dotenv.config({ path: join(process.cwd(), __dirname + '/../.env.local') });
+
+console.log('process.env.NODE_ENV', process.env);
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -16,18 +20,10 @@ const io = new Server(server, {
 	},
 });
 
-const db = new Database('./src/db/coordinates.sqlite');
+const db = initTables(new Database(dbPath));
 
-db.run(`
-    DROP TABLE IF EXISTS user_coordinates;
-    CREATE TABLE IF NOT EXISTS user_coordinates (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id TEXT NOT NULL,
-      latitude REAL NOT NULL,
-      longitude REAL NOT NULL,
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
+const addMatch = db.prepare(querys.add_match),
+	addPlayer = db.prepare(querys.add_player);
 
 io.on('connection', socket => {
 	console.log('Socket connected:', socket.id);
@@ -55,8 +51,9 @@ io.on('connection', socket => {
 			});
 
 			// Salva su DB se richiesto
-			if (process.env.TO_STORE_COORDINATES === 'true') {
-				await db.run(
+			// @ts-ignore
+			if (process.env.TO_STORE_COORDINATES === 1) {
+				db.run(
 					'INSERT INTO user_coordinates (user_id, latitude, longitude) VALUES (?, ?, ?)',
 					user_id,
 					latitude,

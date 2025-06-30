@@ -1,21 +1,11 @@
-import 'module-alias/register';
-import _ from './types/global';
-
-import { spawnSync } from 'child_process';
-import { env, runtime } from '@/lib/utils';
-
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { rmdir, mkdir, rename, copyFile } from 'fs/promises';
+import { spawnSync } from 'bun';
 
-const start = () => require(join(__dirname, `/src/socket/${runtime}/index.ts`));
-
-const build = async () => {
-	const entry = join(__dirname, `/src/socket/${runtime}/index.ts`),
-		outdir = join(__dirname, './dist'),
+export default async (outdir: string) => {
+	const entry = join(__dirname, `/index.ts`),
 		filename = entry.split('\\').pop()!.replace('.ts', '.js');
-
-	console.log(entry, outdir);
 
 	if (existsSync(outdir)) await rmdir(outdir, { recursive: true });
 	await mkdir(outdir, { recursive: true });
@@ -47,11 +37,3 @@ const build = async () => {
 		env,
 	});
 };
-
-switch (env.MODE) {
-	case 'prod':
-		build();
-		break;
-	default:
-		start();
-}
