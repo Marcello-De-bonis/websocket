@@ -70,9 +70,7 @@ io.on('connection', socket => {
 	);
 });
 
-export default (PORT: number = env.PORT ?? 8080) => {
-	server.listen(PORT, () => {
-		console.log(`Socket.IO server running at http://localhost:${PORT}`);
-	});
-	return server;
-}
+const PORT = env.PORT ?? 8080;
+server.listen(PORT, () => {
+	console.log(`Socket.IO server running at http://localhost:${PORT}`);
+});

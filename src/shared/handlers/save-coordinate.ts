@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { writeFile, readFile, mkdir } from 'fs/promises';
 
 export default async (data: any) => {
-	const dbPath = __dirname + '/../db/coordinates.json';
+	const dbPath = __dirname + '/../db/data.json';
 	if (!existsSync(dbPath)) await mkdir(dbPath);
 
 	try {
